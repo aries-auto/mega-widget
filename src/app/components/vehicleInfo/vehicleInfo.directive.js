@@ -1,5 +1,5 @@
 class VehicleInfoDirective {
-  constructor (VehicleInfoController) {
+  constructor () {
     'ngInject';
 
     let directive = {
@@ -9,7 +9,7 @@ class VehicleInfoDirective {
       },
       template: '&nbsp;',
       link: linkFunc,
-      controller: VehicleInfoController,
+      controller: 'VehicleInfoController',
       controllerAs: 'lc'
     };
 

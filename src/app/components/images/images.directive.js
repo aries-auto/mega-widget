@@ -1,5 +1,5 @@
 class ImagesDirective {
-  constructor (ImagesController) {
+  constructor () {
     'ngInject';
 
     let directive = {
@@ -9,7 +9,7 @@ class ImagesDirective {
       },
       template: '&nbsp;',
       link: linkFunc,
-      controller: ImagesController,
+      controller: 'ImagesController',
       controllerAs: 'lc'
     };
 

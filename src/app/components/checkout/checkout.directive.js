@@ -1,5 +1,5 @@
 class CheckoutDirective {
-  constructor (CheckoutController) {
+  constructor () {
     'ngInject';
 
     let directive = {
@@ -9,7 +9,7 @@ class CheckoutDirective {
       },
       template: '&nbsp;',
       link: linkFunc,
-      controller: CheckoutController,
+      controller: 'CheckoutController',
       controllerAs: 'lc'
     };
 

@@ -33,16 +33,16 @@ angular.module('productWidget', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
   .controller('LookupController', LookupController)
   .controller('ResultsController', ResultsController)
   .controller('VehicleInfoController', VehicleInfoController)
-  .controller('ResultControllerfrom', ResultController)
+  .controller('ResultController', ResultController)
   .controller('ImagesController', ImagesController)
   .controller('ContentController', ContentController)
   .controller('CheckoutController', CheckoutController)
 
-  .directive('lookupDirective', LookupDirective)
-  .directive('resultsDirective', ResultsDirective)
-  .directive('vehicleDirective', VehicleInfoDirective)
-  .directive('resultDirective', ResultDirective)
-  .directive('imagesDirective', ImagesDirective)
+  .directive('lookup', LookupDirective)
+  .directive('results', ResultsDirective)
+  .directive('vehicle', VehicleInfoDirective)
+  .directive('result', ResultDirective)
+  .directive('images', ImagesDirective)
   .directive('contentDirective', ContentDirective)
-  .directive('checkoutDirective', CheckoutDirective);
+  .directive('checkout', CheckoutDirective);
 

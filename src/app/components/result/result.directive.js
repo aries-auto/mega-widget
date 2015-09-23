@@ -1,5 +1,5 @@
 class ResultDirective {
-  constructor (ResultController) {
+  constructor () {
     'ngInject';
 
     let directive = {
@@ -9,7 +9,7 @@ class ResultDirective {
       },
       template: '&nbsp;',
       link: linkFunc,
-      controller: ResultController,
+      controller: 'ResultController',
       controllerAs: 'lc'
     };
 

@@ -1,5 +1,5 @@
 class ContentDirective {
-  constructor (ContentController) {
+  constructor () {
     'ngInject';
 
     let directive = {
@@ -9,7 +9,7 @@ class ContentDirective {
       },
       template: '&nbsp;',
       link: linkFunc,
-      controller: ContentController,
+      controller: 'ContentController',
       controllerAs: 'lc'
     };
 
