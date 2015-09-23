@@ -4,7 +4,21 @@ import routerConfig from './index.route';
 
 import runBlock from './index.run';
 import MainController from './main/main.controller';
+import LookupController from './components/lookup/lookup.controller';
+import ResultsController from './components/results/results.controller';
+import VehicleInfoController from './components/vehicleInfo/vehicleInfo.controller';
+import ResultController from './components/result/result.controller';
+import ImagesController from './components/images/images.controller';
+import ContentController from './components/content/content.controller';
+import CheckoutController from './components/checkout/checkout.controller';
+
 import LookupDirective from './components/lookup/lookup.directive';
+import ResultsDirective from './components/results/results.directive';
+import VehicleInfoDirective from './components/vehicleInfo/vehicleInfo.directive';
+import ResultDirective from './components/result/result.directive';
+import ImagesDirective from './components/images/images.directive';
+import ContentDirective from './components/content/content.directive';
+import CheckoutDirective from './components/checkout/checkout.directive';
 
 
 angular.module('productWidget', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngRoute', 'ngMaterial'])
@@ -16,5 +30,19 @@ angular.module('productWidget', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
   .run(runBlock)
 
   .controller('MainController', MainController)
-  .directive('lookupDirective', LookupDirective);
+  .controller('LookupController', LookupController)
+  .controller('ResultsController', ResultsController)
+  .controller('VehicleInfoController', VehicleInfoController)
+  .controller('ResultControllerfrom', ResultController)
+  .controller('ImagesController', ImagesController)
+  .controller('ContentController', ContentController)
+  .controller('CheckoutController', CheckoutController)
+
+  .directive('lookupDirective', LookupDirective)
+  .directive('resultsDirective', ResultsDirective)
+  .directive('vehicleDirective', VehicleInfoDirective)
+  .directive('resultDirective', ResultDirective)
+  .directive('imagesDirective', ImagesDirective)
+  .directive('contentDirective', ContentDirective)
+  .directive('checkoutDirective', CheckoutDirective);
 

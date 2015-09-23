@@ -1,5 +1,5 @@
 class LookupDirective {
-  constructor () {
+  constructor (LookupController) {
     'ngInject';
 
     let directive = {
@@ -9,13 +9,13 @@ class LookupDirective {
       },
       template: '&nbsp;',
       link: linkFunc,
-      controller: MalarkeyController,
-      controllerAs: 'vm'
+      controller: LookupController,
+      controllerAs: 'lc'
     };
 
     return directive;
 
-    function linkFunc(scope, el, attr, vm) {
+    function linkFunc(scope, el, attr, lc) {
      
 
     }
