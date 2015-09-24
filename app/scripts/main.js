@@ -4,7 +4,6 @@ var WIDGET_LOADED = false;
 var API_HOST = 'http://ariesautoapi.curtmfg.com';
 var API_KEY = '883d4046-8b96-11e4-9475-42010af00d4e';
 var LOOKUP_HTML = Handlebars.compile(`
-    <p>{{toUpperCase vehicle.collection}} {{vehicle.year}} {{toUpperCase vehicle.make}} {{toUpperCase vehicle.model}} {{toUpperCase vehicle.style}}</p>
     <div class="form-group">
     {{#if collections}}
         <label class="sr-only" for="aries-widget-collection">Select Category</label><select class="aries-widget-dropdown collection form-control"><option value="">- Select Category - </option>{{#each collections}}<option>{{toUpperCase .}}</option>{{/each}}</select>
@@ -23,26 +22,53 @@ var LOOKUP_HTML = Handlebars.compile(`
     {{/if}}
     </div>
 
+
     {{#if parts}}
     <div class="part-results">
+        <div class="result-info">
+            <div class="col-md-4 total-results">
+                <span>Total Results: </span>
+                <span>{{./parts.length}}</span>
+            </div>
+            <div class="col-md-8">
+                <span>
+                    {{toUpperCase ././vehicle.collection}} {{././vehicle.year}} {{toUpperCase ././vehicle.make}} {{toUpperCase ././vehicle.model}} {{toUpperCase ././vehicle.style}}
+                </span>
+            </div>
+            <div class="clearfix"></div>
+        </div>
         {{#each ./parts}}
             <div class="part">
                 <div class="row">
-                    <p>{{this.short_description}}</p>
+                    <div class="col-md-8">
+                        <h3>{{this.short_description}} #{{this.oldPartNumber}}</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="price">{{getPrice this}}</span>
+                        <button class="btn btn-primary">Add to Cart</button>
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
-                        <img src="{{getImage this.images}}" alt="{{this.short_description}}">
+                    <div class="col-md-4 images">
+                        <img src="{{getImage this.images}}" alt="{{this.short_description}}" class="main img-thumbnail">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-8">
+                        <table class="table table-striped table-bordered table-condensed">
+                            <tbody>
+                            {{#each this.attributes}}
+                                <tr>
+                                    <td>{{key}}</td>
+                                    <td>{{value}}</td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
                         <ul>
-                        {{#each this.attributes}}
-                            <li><strong>{{key}}</strong>: {{value}}</li>
+                        {{#each this.content}}
+                            {{#if_eq this.contentType.Type 'Bullet'}}
+                            <li>{{this.text}}</li>
+                            {{/if_eq}}
                         {{/each}}
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-
                     </div>
                 </div>
             </div>
@@ -88,6 +114,10 @@ function addJQuery() {
 
 // This function will return all of the GET data inside the 'vars' array
 function getUrlVars(){
+    if (window.location.href.indexOf('?') === -1){
+        return [];
+    }
+
     var vars = [], hash;
     var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
     jQuery.each(hashes,function(i, hash){
@@ -143,12 +173,99 @@ function initialize() {
             }
         }
     });
+    Handlebars.registerHelper('getPrice', function(part){
+        if(part === undefined) {
+            return '';
+        }
 
-    getCollections(function(){
-        jQuery('.aries-widget-dropdown').on('change', changeHandler);
+        if (part.customer.price > 0) {
+            return '$' + part.customer.price;
+        }
+
+        for (var i = 0; i < part.pricing.length; i++) {
+            var pr = part.pricing[i];
+            if (pr.type === 'List'){
+                return '$' + pr.price;
+            }
+        }
+    });
+    Handlebars.registerHelper('if_eq', function(a, b, block) {
+        console.log(a, b);
+        if(a === b) {
+            return block.fn(this)
+        }
+        return block.inverse(this);
     });
 
+    var tempVehicle = parseQueryString();
+    if (vehicleIsValid(tempVehicle)) {
+        VEHICLE = tempVehicle;
+        getVehicle(function(){
+            jQuery('.aries-widget-dropdown').on('change', changeHandler);
+        });
+    } else {
+        getCollections(function(data){
+            var obj = {collections: data, vehicle: VEHICLE};
+            var colHTML = LOOKUP_HTML(obj);
+            jQuery('.aries-widget-dropdown').remove();
+            jQuery('#aries-widget').html(colHTML);
+            jQuery('.aries-widget-dropdown').on('change', changeHandler);
+        });
+    }
+
     WIDGET_LOADED = true;
+}
+
+function parseQueryString() {
+    var tmp = {};
+    var hashes = jQuery.getUrlVars();
+
+    if (hashes['category'] === undefined){
+        return {};
+    }
+    tmp.collection = decodeURIComponent(hashes['category']);
+
+    if (hashes['year'] === undefined){
+        return {};
+    }
+    tmp.year = decodeURIComponent(hashes['year']);
+
+    if (hashes['make'] === undefined){
+        return {};
+    }
+    tmp.make = decodeURIComponent(hashes['make']);
+
+    if (hashes['model'] === undefined){
+        return {};
+    }
+    tmp.model = decodeURIComponent(hashes['model']);
+
+    if (hashes['style'] === undefined){
+        return {};
+    }
+    tmp.style = decodeURIComponent(hashes['style']);
+
+    return tmp;
+}
+
+function vehicleIsValid(v) {
+    if (v.collection === undefined || v.collection === ''){
+        return false;
+    }
+    if (v.year === undefined || v.year === ''){
+        return false;
+    }
+    if (v.make === undefined || v.make === ''){
+        return false;
+    }
+    if (v.model === undefined || v.model === ''){
+        return false;
+    }
+    if (v.style === undefined || v.style === ''){
+        return false;
+    }
+
+    return true;
 }
 
 function changeHandler(){
@@ -184,12 +301,7 @@ function getCollections(callback) {
     });
 
     req.done(function(data) {
-        var obj = {collections: data, vehicle: VEHICLE};
-        var colHTML = LOOKUP_HTML(obj);
-        jQuery('#aries-widget-collection').remove();
-        jQuery('#aries-widget').html(colHTML);
-
-        callback();
+        callback(data);
     });
 }
 
@@ -202,11 +314,20 @@ function getVehicle(callback) {
     });
 
     req.done(function(data) {
-        data.vehicle = VEHICLE;
-        var yearHTML = LOOKUP_HTML(data);
-        jQuery('#aries-widget .form-group').remove();
-        jQuery('#aries-widget').html(yearHTML);
-        callback();
+        getCollections(function(cols){
+            data.vehicle = VEHICLE;
+            if (data.parts && data.parts.length > 0) {
+                data.collections = cols;
+                VEHICLE = {};
+            }
+
+            var yearHTML = LOOKUP_HTML(data);
+            jQuery('#aries-widget .form-group').remove();
+            jQuery('#aries-widget').html(yearHTML);
+
+            callback();
+        });
+
     });
 }
 
