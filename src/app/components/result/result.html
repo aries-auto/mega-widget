@@ -1,5 +1,12 @@
 
 <div>
 <p>Note: Result Directive currently is hardcoded to one part for building out the widget</p>
-{{part.oldPartNumber}}
+
+<!-- This is just for testing the services and controller functions, formating will come later -->
+<h3>{{part.short_description}}</h3>
+<span>{{part.oldPartNumber}}</span>
+<div>
+<a href="{{getInstallSheet()}}" target="_blank">Install Sheet</a>
+</div>
+
 </div>

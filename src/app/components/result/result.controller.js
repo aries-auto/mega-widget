@@ -1,5 +1,5 @@
 class ResultController {
-  constructor ($scope, $rootScope, ResultService) {
+  constructor ($scope, $rootScope, $sce, ResultService) {
     'ngInject';
     console.log('I am a result controller');
     ResultService.part().then((resp) =>{
@@ -8,6 +8,16 @@ class ResultController {
     }, (err) =>{
     	$rootScope.error = err;
     });
+
+   	$scope.getInstallSheet = function(){
+		if($scope.part === undefined || $scope.part.install_sheet === undefined){
+			return '';
+		}
+		if($scope.part === null || $scope.part.install_sheet === null){
+			return '';
+		}
+		return $sce.trustAsResourceUrl($scope.part.install_sheet.Scheme +'://'+$scope.part.install_sheet.Host+$scope.part.install_sheet.Path);
+	};
     
   }
 }

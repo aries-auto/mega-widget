@@ -7,7 +7,7 @@ class ResultService {
 
 	part(){
 		return this.$http({
-			url: this.$domain + '/part/203045',
+			url: this.$domain + '/part/2040015',
 			method:'get',
 			params:{
 				'key': this.$key
