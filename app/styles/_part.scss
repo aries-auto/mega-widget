@@ -8,6 +8,35 @@
 .part{
     border-bottom: 1px solid #eaeaea;
     padding: 15px 0;
+
+    .row:nth-child(1) {
+        min-height: 60px;
+        .checkout {
+            min-height: 60px;
+            line-height: 60px;
+            .price {
+                vertical-align: bottom;
+                font-weight: bold;
+                font-size: 16px;
+                color: #c73031;
+            }
+
+            .paypal{
+                .row > div {
+                    padding-right: 0;
+                    margin-right: 0;
+                }
+                .price, label {
+                    line-height: 20px;
+                    margin-bottom: 0;
+                }
+                .price {
+                    display:block;
+                }
+            }
+        }
+    }
+
     .images{
         .main{
             max-width: 100%;

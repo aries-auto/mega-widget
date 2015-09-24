@@ -1,9 +1,110 @@
 var REQUIRED_JQUERY = 1.9;
 var JQUERY_INJECTED = false;
 var WIDGET_LOADED = false;
+var SHOPPING_CART = 'none';
+var CUSTOMER_EMAIL = '';
+var CART_LINK = '';
 var API_HOST = 'http://ariesautoapi.curtmfg.com';
 var API_KEY = '883d4046-8b96-11e4-9475-42010af00d4e';
 var LOOKUP_HTML = Handlebars.compile(`
+	{{#registerPartial "paypal"}}
+		<form class="paypal" target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+			<div class="row">
+				<div class="col-md-5">
+					<span class="price accPrice">{{getPrice this}}</span>
+					<label>Qty</label>
+					<select name="quantity" style="min-width:40px;display:inline">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</select>
+				</div>
+				<div class="col-md-7">
+					<input type="hidden" name="item_number" value="{{this.short_description}} #{{this.oldPartNumber}}" />
+					<input type="hidden" name="cmd" value="_xclick" />
+					<input type="hidden" name="no_note" value="1" />
+					<input type="hidden" name="business" value="{{../cart.email}}" />
+					<input type="hidden" name="currency_code" value="USD" />
+					<input type="hidden" name="return" value="{{../cart.location}}" />
+					<input type="hidden" name="item_name" value="{{this.short_description}}" />
+					<input type="hidden" name="amount" value="{{getPrice this}}" />
+					<input type="image" name="submit" src="https://www.paypalobjects.com/webstatic/en_US/btn/btn_pponly_142x27.png" border="0" align="top" alt="Check out with PayPal" />
+				</div>
+			</div>
+		</form>
+	{{/registerPartial}}
+	{{#registerPartial "custom"}}
+		{{#if_eq ../cart.link ''}}
+		{{else}}
+		<span class="price">{{getPrice this}}</span>
+		<a href="{{generateCartLink ../cart.link this.customer.cart_reference}}" title="Buy Now">
+			<img src="https://labs.curtmfg.com/widget_v2/img/checkout.png" alt="Checkout" />
+		</a>
+		{{/if_eq}}
+	{{/registerPartial}}
+	{{#registerPartial "nuera"}}
+		<span class="price"><span>Price:</span>{{getPrice this}}</span>
+		<form class="nuera" method="post" action="{{generateCartLink ../cart.link this.oldPartNumber}}">
+			<input name="VariantStyle" id="VariantStyle" type="hidden" value="0" />
+			<input name="IsWishList" id="IsWishList" type="hidden" value="0" />
+			<input name="IsGiftRegistry" id="IsGiftRegistry" type="hidden" value="0" />
+			<input name="UpsellProducts" id="UpsellProducts" type="hidden" value="" />
+			<input name="CartRecID" id="CartRecID" type="hidden" value="0" />
+			<input name="ProductID" id="ProductID" type="hidden" value="{{this.customer.cart_reference}}" />
+			<input name="VariantID" id="VariantID" type="hidden" value="0" />
+			<small>Quantity:</small>
+			<input name="Quantity" id="Quantity" type="text" value="1" size="3" maxlength="4" />
+			<input type="submit" value="Add to Cart" />
+		</form>
+	{{/registerPartial}}
+	{{#registerPartial "fasttrackracks"}}
+		<form action="http://www.fasttrackracks.com/store/addtocart.aspx" method="post">
+			<div style="padding-top:15px"><span class="price accPrice">{{getPrice this}}</span>
+				<label>Qty</label>
+				<select name="qty" style="min-width:40px;display:inline">
+					<option>1</option>
+					<option>2</option>
+					<option>3</option>
+					<option>4</option>
+					<option>5</option>
+				</select>
+			</div>
+			<input type="hidden" name="return" value="{{../cart.location}}" />
+			<input type="hidden" name="imageurl" value="{{getImage this.images}}" />
+			<input type="hidden" name="ItemNbr" value="{{this.short_description}} #{{this.oldPartNumber}}" />
+			<input type="hidden" name="product" value="{{vehicleString ../cart.vehicle}} {{this.short_description}} #{{this.oldPartNumber}}" />
+			<input type="hidden" name="notax" value="null" />
+			<input type="hidden" name="price" value="{{getPrice this}}" />
+			<input type="hidden" name="weight" value="null" />
+			<input type="submit" name="submit" class="fasttrackracks_button" value="Buy Now" />
+		</form>
+	{{/registerPartial}}
+	{{#registerPartial "stowaway2"}}
+		<form action="http://www.stowaway2.com/store/addtocart.aspx" method="post">
+			<div style="padding-top:15px"><span class="price accPrice">{{getPrice this}}</span>
+				<label>Qty</label>
+				<select name="qty" style="min-width:40px;display:inline">
+					<option>1</option>
+					<option>2</option>
+					<option>3</option>
+					<option>4</option>
+					<option>5</option>
+				</select>
+			</div>
+			<input type="hidden" name="return" value="{{../cart.location}}" />
+			<input type="hidden" name="imageurl" value="{{getImage this.images}}" />
+			<input type="hidden" name="ItemNbr" value="{{this.short_description}} #{{this.oldPartNumber}}" />
+			<input type="hidden" name="product" value="{{vehicleString ../cart.vehicle}} {{this.short_description}} #{{this.oldPartNumber}}" />
+			<input type="hidden" name="notax" value="null" />
+			<input type="hidden" name="price" value="{{getPrice this}}" />
+			<input type="hidden" name="weight" value="null" />
+			<input type="submit" name="submit" class="fasttrackracks_button" value="Buy Now" />
+		</form>
+	{{/registerPartial}}
+
+
     <div class="form-group">
     {{#if collections}}
         <label class="sr-only" for="aries-widget-collection">Select Category</label><select class="aries-widget-dropdown collection form-control"><option value="">- Select Category - </option>{{#each collections}}<option>{{toUpperCase .}}</option>{{/each}}</select>
@@ -40,12 +141,11 @@ var LOOKUP_HTML = Handlebars.compile(`
         {{#each ./parts}}
             <div class="part">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <h3>{{this.short_description}} #{{this.oldPartNumber}}</h3>
                     </div>
-                    <div class="col-md-4">
-                        <span class="price">{{getPrice this}}</span>
-                        <button class="btn btn-primary">Add to Cart</button>
+                    <div class="col-md-5 checkout">
+						{{#partial ../cart.type this}}{{/partial}}
                     </div>
                 </div>
                 <div class="row">
@@ -173,6 +273,9 @@ function initialize() {
             }
         }
     });
+	Handlebars.registerHelper('vehicleString', function(v){
+		return v.year + ' ' + v.make + ' ' + v.model + ' ' + v.style;
+	});
     Handlebars.registerHelper('getPrice', function(part){
         if(part === undefined) {
             return '';
@@ -185,17 +288,43 @@ function initialize() {
         for (var i = 0; i < part.pricing.length; i++) {
             var pr = part.pricing[i];
             if (pr.type === 'List'){
-                return '$' + pr.price;
+                return '$' + parseFloat(pr.price, 2).toFixed(2);
             }
         }
     });
     Handlebars.registerHelper('if_eq', function(a, b, block) {
-        console.log(a, b);
         if(a === b) {
             return block.fn(this)
         }
         return block.inverse(this);
     });
+	Handlebars.registerHelper('generateCartLink', function(a, b){
+		return a.replace('[part_id]', b);
+	});
+	Handlebars.registerHelper('registerPartial', function(name, options) {
+		Handlebars.dynamicPartials = Handlebars.dynamicPartials || {};
+		Handlebars.dynamicPartials[name] = function (context, _options) {
+			return options.fn(context, _options);
+		};
+	});
+	Handlebars.registerHelper('partial', function (name, context, options) {
+		context = context || {};
+		var partial = Handlebars.dynamicPartials[name];
+		partial = partial || Handlebars.partials[name];
+		if (!partial) {
+			return "";
+		}
+		return partial.call(null, context, options);
+	});
+
+	var widget = document.getElementById('aries-widget');
+	SHOPPING_CART = widget.getAttribute('data-cart');
+	CUSTOMER_EMAIL = widget.getAttribute('data-email');
+	CART_LINK = widget.getAttribute('data-cart-link') || '';
+	var tmpKey = widget.getAttribute('data-key');
+	if (tmpKey !== undefined && tmpKey !== null && tmpKey !== ''){
+		API_KEY = tmpKey;
+	}
 
     var tempVehicle = parseQueryString();
     if (vehicleIsValid(tempVehicle)) {
@@ -316,6 +445,31 @@ function getVehicle(callback) {
     req.done(function(data) {
         getCollections(function(cols){
             data.vehicle = VEHICLE;
+			if (SHOPPING_CART === 'nuera'){
+				var returnURL = window.location.pathname;
+				if (returnURL.indexOf('?') !== -1) {
+					returnURL += '&partID=[part_id]';
+				}else{
+					returnURL += '?partID=[part_id]';
+				}
+
+				if (CART_LINK === '') {
+					CART_LINK = '/addtocart.aspx?returnurl=' + returnURL;
+				} else {
+					if (CART_LINK.indexOf('?') !== -1) {
+						CART_LINK += '&returnurl=' + returnURL;
+					} else {
+						CART_LINK += '?returnurl=' + returnURL;
+					}
+				}
+			}
+			data.cart = {
+				type: SHOPPING_CART,
+				location: window.location.href,
+				email: CUSTOMER_EMAIL,
+				link: CART_LINK,
+				vehicle: VEHICLE
+			};
             if (data.parts && data.parts.length > 0) {
                 data.collections = cols;
                 VEHICLE = {};
