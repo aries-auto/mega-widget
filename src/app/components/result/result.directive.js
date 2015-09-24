@@ -16,7 +16,6 @@ class ResultDirective {
     return directive;
 
     function linkFunc(scope, el, attr, lc) {
-      console.log('I am a directive I swear');
 
     }
 

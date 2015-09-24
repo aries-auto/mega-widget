@@ -1,8 +1,13 @@
 class ResultController {
   constructor ($scope, $rootScope, $sce, ResultService) {
     'ngInject';
-    console.log('I am a result controller');
-    ResultService.part().then((resp) =>{
+
+    $scope.part = {};
+    $scope.litUp = false;
+    $scope.litUpVideo= false;
+
+    // partID is hardcoded right now for building out the widget
+    ResultService.part(2040015).then((resp) =>{
     	$scope.part = resp.data;
     	console.log($scope.part);
     }, (err) =>{
@@ -71,6 +76,47 @@ class ResultController {
             }
         }
         return '';
+    };
+
+    $scope.toggleInstallSheet = function(){
+        $scope.litUp = !$scope.litUp;
+    }
+    $scope.toggleVideoLightbox = function(v){
+        $scope.vid = v;
+        $scope.litUpVideo = !$scope.litUpVideo;
+    }
+    $scope.getInstallVideo = function(){
+        if($scope.part === undefined || $scope.part.videos === undefined){
+            return '';
+        }
+        if($scope.part === null || $scope.part.videos === null){
+            return '';
+        }
+
+        for (var i = $scope.part.videos.length - 1; i >= 0; i--) {
+            var vid = $scope.part.videos[i];
+            if(vid.Type === 'Installation Video'){
+                return vid.YouTubeVideoId;
+            }
+        }
+        return '';
+    };
+
+    $scope.renderYouTube = function(vid){
+        if(vid.channels === undefined || vid.channels.length === 0){
+            return '';
+        }
+        return $sce.trustAsHtml(vid.channels[0].embedCode.replace(vid.channels[0].foreignId,vid.channels[0].foreignId+'?rel=0'));
+    };
+
+    $scope.checkForDoubles = function(combo){
+        var flag = true;
+        for (var i = 0; i <= metakeys.length; i++) {
+            if (combo === metakeys[i]) {
+                flag = false;
+            }
+        }
+        return flag;
     };
 
 
