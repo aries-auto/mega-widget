@@ -12,7 +12,8 @@
 	<md-content ng-repeat="part in parts">
 		<h3 class="part header">{{part.short_description}}</h3>
 		<h5 class="part number">Part Number: {{part.id}}</h5>
-		<div class="part thumb"><img ng-src="{{part.smallImage}}" /></div>
+		<h5 ng-if="part.upc" class="part upc">UPC: {{part.upc}}</h5>
+		
 
 		<product-image ng-model="part" max-height="100"></product-image>
 		<manufacturer-price ng-model="part"></manfacturer-price>
