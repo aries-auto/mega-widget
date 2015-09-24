@@ -5,9 +5,9 @@ class ResultService {
     this.$key = Constants.APIKEY;
   }
 
-	part(){
+	part(partID){
 		return this.$http({
-			url: this.$domain + '/part/2040015',
+			url: this.$domain + '/part/' + partID,
 			method:'get',
 			params:{
 				'key': this.$key
