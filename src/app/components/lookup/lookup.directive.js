@@ -5,7 +5,7 @@ class LookupDirective {
     let directive = {
       restrict: 'E',
       scope: {
-          extraValues: '='
+          val: '='
       },
       templateUrl: 'app/components/lookup/lookup.html',
       link: linkFunc,
@@ -16,7 +16,7 @@ class LookupDirective {
     return directive;
 
     function linkFunc(scope, el, attr, lc) {
-      console.log('I am a directive');
+
 
     }
 

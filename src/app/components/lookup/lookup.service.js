@@ -1,19 +1,38 @@
 class LookupService {
-  constructor ($http, Constants) {
-    this.$http = $http;
-    this.$domain = Constants.APIURL;
-    this.$key = Constants.APIKEY;
-  }
+	constructor ($http, Constants) {
+		this.$http = $http;
+		this.$domain = Constants.APIURL;
+		this.$key = Constants.APIKEY;
+	}
 
-	vehicle(){
+	vehicle(collection, vehicle){
+		if (vehicle === null || vehicle === undefined) {
+			vehicle = {};
+		}
 		return this.$http({
-			url: this.$domain + '/vehicle',
+			url: this.$domain + '/vehicle/mongo',
 			method:'post',
+			params:{
+				'key': this.$key,
+				'collection': collection,
+				'year': vehicle.year,
+				'make': vehicle.make,
+				'model': vehicle.model,
+				'style': vehicle.style
+			}
+		});
+	}
+
+	categories(){
+		return this.$http({
+			url: this.$domain + '/vehicle/mongo/cols',
+			method:'get',
 			params:{
 				'key': this.$key
 			}
 		});
 	}
+
 }
 
 LookupService.$inject = ['$http','Constants'];
