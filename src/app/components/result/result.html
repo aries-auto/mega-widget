@@ -1,12 +1,54 @@
-
 <div>
-<p>Note: Result Directive currently is hardcoded to one part for building out the widget</p>
+	<h1>Result Directive</h1>
+	<p>Note: Result Directive currently is hardcoded to one part for building out the widget</p>
 
-<!-- This is just for testing the services and controller functions, formating will come later -->
-<h3>{{part.short_description}}</h3>
-<span>{{part.oldPartNumber}}</span>
-<div>
-<a href="{{getInstallSheet()}}" target="_blank">Install Sheet</a>
-</div>
+	<!-- This is just for testing the services and controller functions, formating will come later -->
+	<h3>{{part.short_description}}</h3>
+	<span>{{part.oldPartNumber}}</span>
+	<div class="install-sheet" ng-if="getInstallSheet() !== ''">
+		<a href="{{getInstallSheet()}}" target="_blank">Install Sheet</a>
+	</div>
+	<div class="msrp" ng-if="getPrice() !== ''">
+		<span>MSRP {{getPrice()}}</span>
+	</div>
+	<hr />
+	<h2>Attributes</h2>
+
+	<table ng-if="part.attributes.length > 0">
+		<tbody>
+			<tr ng-repeat="attr in part.attributes | orderBy:'key'">
+				<td><strong>{{attr.key}}</strong></td>
+				<td>{{attr.value}}</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+	<div ng-show="part.content">
+		<div>
+			<div ng-bind-html="renderHTML(getHTMLDesc())"></div>
+		</div>
+
+		<div class="clearfix"></div>
+		<ul>
+			<li ng-repeat="c in getBullets()">{{c}}</li>
+		</ul>
+	</div>
+
+	<div ng-if="(((part.content | filter:{key:'Bullet'}).length) + ((part.attributes | filter:{key:'!' + 'UPC'}).length) > 0 || getCategoryBrief() !== '')">
+		<div>
+			<h2>Category Brief</h2>
+			<div>
+				<div ng-bind-html="renderHTML(getCategoryBrief())"></div>
+			</div>
+
+			<div>
+				<ul>
+					<li ng-repeat="c in part.content | filter:{key:'Bullet'}" ng-bind-html="renderHTML(c.text)"></li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
 
 </div>
