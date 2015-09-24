@@ -7,7 +7,7 @@ class ResultDirective {
       scope: {
           extraValues: '='
       },
-      template: '&nbsp;',
+      templateUrl: 'app/components/result/result.html',
       link: linkFunc,
       controller: 'ResultController',
       controllerAs: 'lc'
@@ -16,7 +16,7 @@ class ResultDirective {
     return directive;
 
     function linkFunc(scope, el, attr, lc) {
-     
+      console.log('I am a directive I swear');
 
     }
 
