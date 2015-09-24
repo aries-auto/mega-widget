@@ -4,20 +4,16 @@ class ImagesDirective {
 
     let directive = {
       restrict: 'E',
-      scope: {
-          extraValues: '='
-      },
-      template: '&nbsp;',
+      template: 'app/components/images/image.html',
       link: linkFunc,
       controller: 'ImagesController',
-      controllerAs: 'lc'
+      controllerAs: 'img'
     };
 
     return directive;
 
     function linkFunc(scope, el, attr, lc) {
-     
-
+      
     }
 
   }
