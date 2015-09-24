@@ -1,7 +1,13 @@
 class LookupController {
-  constructor () {
+  constructor ($scope, $rootScope, LookupService) {
     'ngInject';
     console.log('I am a lookup controller');
+    LookupService.vehicle().then((resp) =>{
+    	$scope.years = resp.data.available_years;
+    	// console.log($scope.years);
+    }, (err) =>{
+    	$rootScope.error = err;
+    });
     
   }
 }

@@ -7,7 +7,7 @@ class LookupDirective {
       scope: {
           extraValues: '='
       },
-      template: '<p>TEST</p>',
+      templateUrl: 'app/components/lookup/lookup.html',
       link: linkFunc,
       controller: 'LookupController',
       controllerAs: 'lc'

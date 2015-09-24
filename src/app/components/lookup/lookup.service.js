@@ -1,21 +1,21 @@
 class LookupService {
-  constructor ($http) {
+  constructor ($http, Constants) {
     this.$http = $http;
-    
+    this.$domain = Constants.APIURL;
+    this.$key = Constants.APIKEY;
   }
 
- //  findGroups(group){
-	// 	return this.$http({
-	// 		url: this.$domain + '/group/find',
-	// 		method:'post',
-	// 		data:group,
-	// 		headers:{
-	// 			'Authorization':' bearer '+this.user.auth.token
-	// 		}
-	// 	});
-	// }
+	vehicle(){
+		return this.$http({
+			url: this.$domain + '/vehicle',
+			method:'post',
+			params:{
+				'key': this.$key
+			}
+		});
+	}
 }
 
-LookupService.$inject = ['$http'];
+LookupService.$inject = ['$http','Constants'];
 
 export default LookupService;

@@ -22,6 +22,8 @@ import CheckoutDirective from './components/checkout/checkout.directive';
 
 import LookupService from './components/lookup/lookup.service';
 
+import Constants from './constants/constants';
+
 
 angular.module('productWidget', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngRoute', 'ngMaterial'])
 
@@ -48,6 +50,7 @@ angular.module('productWidget', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
   .directive('contentDirective', ContentDirective)
   .directive('checkout', CheckoutDirective)
 
-  .service('LookupService', LookupService);
+  .service('LookupService', LookupService)
+  .service('Constants', Constants);
 
 
