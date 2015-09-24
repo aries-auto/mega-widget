@@ -20,6 +20,8 @@ import ImagesDirective from './components/images/images.directive';
 import ContentDirective from './components/content/content.directive';
 import CheckoutDirective from './components/checkout/checkout.directive';
 
+import LookupService from './components/lookup/lookup.service';
+
 
 angular.module('productWidget', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngRoute', 'ngMaterial'])
 
@@ -44,5 +46,8 @@ angular.module('productWidget', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
   .directive('result', ResultDirective)
   .directive('images', ImagesDirective)
   .directive('contentDirective', ContentDirective)
-  .directive('checkout', CheckoutDirective);
+  .directive('checkout', CheckoutDirective)
+
+  .service('LookupService', LookupService);
+
 
