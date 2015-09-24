@@ -32,6 +32,7 @@ class LookupController {
 
     $scope.updateStyle = (style) =>{
 		$scope.vehicle.style = style;
+		$rootScope.vehicle = $scope.vehicle;
 		getVehicle($scope.category, $scope.vehicle);
     };
 
@@ -41,11 +42,16 @@ class LookupController {
 			$scope.makes = resp.data.available_makes;
 			$scope.models = resp.data.available_models;
 			$scope.styles = resp.data.available_styles;
-			$scope.parts = resp.data.parts;
+			$rootScope.parts = resp.data.parts;
+			// console.log(resp.data.parts);//TODO remove
 		}, (err) => {
 			$rootScope.error = err;
 		});
     };
+
+	//TODO remove
+    //make development easier
+    // getVehicle('3 in round side bars',{year:'2015',make:'ford', model:'f-150', style:'super cab'});
     
   }
 }
