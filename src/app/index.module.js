@@ -24,6 +24,7 @@ import LookupService from './components/lookup/lookup.service';
 import ResultService from './components/result/result.service';
 
 import Constants from './constants/constants';
+import ProductImage from './directives/productImage';
 
 
 angular.module('productWidget', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngRoute', 'ngMaterial'])
@@ -50,6 +51,9 @@ angular.module('productWidget', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
   .directive('images', ImagesDirective)
   .directive('contentDirective', ContentDirective)
   .directive('checkout', CheckoutDirective)
+
+  .directive('productImage', ProductImage)
+
 
   .service('LookupService', LookupService)
   .service('ResultService', ResultService)

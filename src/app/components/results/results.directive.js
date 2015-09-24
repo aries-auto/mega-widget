@@ -5,17 +5,18 @@ class ResultsDirective {
     let directive = {
       restrict: 'E',
       scope: {
-          extraValues: '='
+          parts: '=',
+          vehicle: '='
       },
-      template: '&nbsp;',
+      templateUrl: '/app/components/results/results.html',
       link: linkFunc,
       controller: 'ResultsController',
-      controllerAs: 'lc'
+      controllerAs: 'rc'
     };
 
     return directive;
 
-    function linkFunc(scope, el, attr, lc) {
+    function linkFunc(scope, el, attr, rc) {
      
 
     }
