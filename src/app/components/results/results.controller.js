@@ -1,8 +1,6 @@
 class ResultsController {
-  constructor ($scope, $rootScope) {
+  constructor ($scope) {
     'ngInject';
-
-    $scope.parts = $rootScope.parts;
 
     for (let i = 0; i < $scope.parts.length; i++){
 	    for (let j = 0; j < $scope.parts[i].attributes.length; j++){

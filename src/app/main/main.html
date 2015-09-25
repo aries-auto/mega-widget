@@ -7,20 +7,20 @@
 
     <section class="jumbotron">
       <h3>Product Widget</h3>
-      <navbar>HEY</navbar>
     </section>
 
     <div layout-align="center">
-      <h4>Hitch Widget Sample Could Go Here</h4>
-      <lookup></lookup>
-      <results ng-if="parts" parts="parts" vehicle="vehicle"></results>
-
-      <content-directive></content-directive>
-      <images></images>
-      <result></result>
-      <vehicle-info></vehicle-info>
-
-
+      <h4>Hitch Widget Example</h4>
+      <main-directive>
+        <lookup></lookup>
+        <results ng-if="parts" parts="parts" vehicle="vehicle">
+            <vehicle-info></vehicle-info>
+            <result>
+              <images></images>
+              <content-directive></content-directive>
+            </result>    
+        </results>
+      </main-directive>
 
     </div>
   </md-content>

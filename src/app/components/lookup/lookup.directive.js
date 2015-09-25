@@ -4,7 +4,7 @@ class LookupDirective {
 
     let directive = {
       restrict: 'E',
-      scope: {},
+      scope: false,
       templateUrl: 'app/components/lookup/lookup.html',
       link: linkFunc,
       controller: 'LookupController',

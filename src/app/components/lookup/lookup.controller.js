@@ -32,7 +32,6 @@ class LookupController {
 
     $scope.updateStyle = (style) =>{
 		$scope.vehicle.style = style;
-		$rootScope.vehicle = $scope.vehicle;
 		getVehicle($scope.category, $scope.vehicle);
     };
 
@@ -42,8 +41,7 @@ class LookupController {
 			$scope.makes = resp.data.available_makes;
 			$scope.models = resp.data.available_models;
 			$scope.styles = resp.data.available_styles;
-			$rootScope.parts = resp.data.parts;
-			// console.log(resp.data.parts);//TODO remove
+			$scope.parts = resp.data.parts;
 		}, (err) => {
 			$rootScope.error = err;
 		});
