@@ -48,7 +48,7 @@ angular.module('productWidget', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
 
   .directive('lookup', LookupDirective)
   .directive('results', ResultsDirective)
-  .directive('vehicle', VehicleInfoDirective)
+  .directive('vehicleInfo', VehicleInfoDirective)
   .directive('result', ResultDirective)
   .directive('images', ImagesDirective)
   .directive('contentDirective', ContentDirective)

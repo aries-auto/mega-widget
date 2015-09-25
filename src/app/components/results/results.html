@@ -1,13 +1,6 @@
 <md-input-container>
 
-	<md-content class="vehicleInfo">
-		<h2>
-			<span ng-if="vehicle.year">{{vehicle.year}}</span>
-			<span ng-if="vehicle.make">{{vehicle.make}}</span>
-			<span ng-if="vehicle.model">{{vehicle.model}}</span>
-			<span ng-if="vehicle.style">{{vehicle.style}}</span>
-		</h2>
-	</md-content>
+	<vehicle-info ng-if="vehicle" vehicle="vehicle"></vehicle-info>
 
 	<md-content ng-repeat="part in parts">
 		<h3 class="part header">{{part.short_description}}</h3>

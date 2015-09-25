@@ -5,9 +5,9 @@ class VehicleInfoDirective {
     let directive = {
       restrict: 'E',
       scope: {
-          extraValues: '='
+          vehicle: '='
       },
-      template: '&nbsp;',
+      templateUrl: '/app/components/vehicleInfo/vehicleInfo.html',
       link: linkFunc,
       controller: 'VehicleInfoController',
       controllerAs: 'lc'
@@ -16,7 +16,7 @@ class VehicleInfoDirective {
     return directive;
 
     function linkFunc(scope, el, attr, lc) {
-     
+      console.log(scope)
 
     }
 
