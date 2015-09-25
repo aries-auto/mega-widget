@@ -49,7 +49,7 @@ class LookupController {
 
 	//TODO remove
     //make development easier
-    getVehicle('3 in round side bars',{year:'2015',make:'ford', model:'f-150', style:'super cab'});
+    // getVehicle('3 in round side bars',{year:'2015',make:'ford', model:'f-150', style:'super cab'});
     
   }
 }

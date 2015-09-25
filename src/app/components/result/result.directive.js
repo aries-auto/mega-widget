@@ -4,19 +4,17 @@ class ResultDirective {
 
     let directive = {
       restrict: 'E',
-      scope: {
-          extraValues: '='
-      },
+      scope: false,
       templateUrl: 'app/components/result/result.html',
       link: linkFunc,
       controller: 'ResultController',
-      controllerAs: 'lc'
+      controllerAs: 'lc',
+      transclude: true
     };
 
     return directive;
 
     function linkFunc(scope, el, attr, lc) {
-
     }
 
   }

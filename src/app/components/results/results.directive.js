@@ -11,13 +11,13 @@ class ResultsDirective {
       templateUrl: '/app/components/results/results.html',
       link: linkFunc,
       controller: 'ResultsController',
-      controllerAs: 'rc'
+      controllerAs: 'rc',
+      transclude: true
     };
 
     return directive;
 
     function linkFunc(scope, el, attr, rc) {
-     
 
     }
 

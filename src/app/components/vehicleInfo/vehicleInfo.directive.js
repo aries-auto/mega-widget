@@ -16,7 +16,6 @@ class VehicleInfoDirective {
     return directive;
 
     function linkFunc(scope, el, attr, lc) {
-      console.log(scope)
 
     }
 

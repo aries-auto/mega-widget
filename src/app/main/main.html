@@ -14,11 +14,10 @@
       <main-directive>
         <lookup></lookup>
         <results ng-if="parts" parts="parts" vehicle="vehicle">
-            <vehicle-info></vehicle-info>
-            <result>
-              <images></images>
-              <content-directive></content-directive>
-            </result>    
+          <result ng-repeat="part in parts" part="part">{{part.id}} -- {{part.short_description}}
+            <images></images>
+            <content-directive></content-directive>
+          </result>  
         </results>
       </main-directive>
 

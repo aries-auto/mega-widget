@@ -2,17 +2,8 @@ class ResultController {
   constructor ($scope, $rootScope, $sce, ResultService) {
     'ngInject';
 
-    $scope.part = {};
     $scope.litUp = false;
     $scope.litUpVideo= false;
-
-    // partID is hardcoded right now for building out the widget
-    ResultService.part(2040015).then((resp) =>{
-    	$scope.part = resp.data;
-    	console.log($scope.part);
-    }, (err) =>{
-    	$rootScope.error = err;
-    });
 
    	$scope.getInstallSheet = function(){
   		if($scope.part === undefined || $scope.part.install_sheet === undefined){
