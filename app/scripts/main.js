@@ -281,27 +281,7 @@ function initialize() {
     });
 
 		Handlebars.registerHelper('getThumbs', function(images){
-				if(images === undefined) {
-						return '';
-				}
-
-				var result = "";
-				var src = "";
-				var str = "";
-
-				console.log(IMG_SEL);
-
-				for (var i = 0; i < images.length; i++) {
-					var img = images[i];
-					if(img.size === "Tall" && img.path.Path !== IMG_SEL){
-						src = img.path.Scheme + '://' + img.path.Host + img.path.Path;
-						str = "<img src='" + src + "' alt='" + this.short_description + "' class='mini img-thumbnail'>";
-						result = result.concat(str);
-					}
-        }
-
-				return result;
-
+			return getThumbnails(images);
 		});
 
 	Handlebars.registerHelper('vehicleString', function(v){
@@ -516,12 +496,29 @@ function getVehicle(callback) {
     });
 }
 
-function setImages(images, imgPath) {
+function getThumbnails(images) {
+	if(images === undefined) {
+			return '';
+	}
 
+	var result = "";
+	var src = "";
+	var str = "";
+
+	for (var i = 0; i < images.length; i++) {
+		var img = images[i];
+		if(img.size === "Tall" && img.path.Path !== IMG_SEL){
+			src = img.path.Scheme + '://' + img.path.Host + img.path.Path;
+			str = "<img src='" + src + "' alt='" + this.short_description + "' class='mini img-thumbnail'>";
+			result = result.concat(str);
+		}
+	}
+
+	return result;
 }
 
-function getThumbnails(images, imgPath) {
-
+function getSelected(images, imgPath) {
+	var tmp = "img_main"
 }
 
 initialize();
