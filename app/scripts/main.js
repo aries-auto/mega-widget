@@ -152,9 +152,9 @@ var LOOKUP_HTML = Handlebars.compile(`
                 <div>
                     <div class="col-md-4 images">
                         <img src="{{getImage this.images}}" id="img-main-{{this.oldPartNumber}}" alt="{{this.short_description}}" class="main img-thumbnail">
-												<div id="img_thumbs">
-													{{{getThumbs this.images}}}
-												</div>
+						<div class="img-thumbs">
+							{{{getThumbs this.images}}}
+						</div>
                     </div>
                     <div class="col-md-8">
                         <table class="table table-striped table-bordered table-condensed">
@@ -174,6 +174,7 @@ var LOOKUP_HTML = Handlebars.compile(`
                             {{/if_eq}}
                         {{/each}}
                     </div>
+					<div class="clearfix"></div>
                 </div>
             </div>
         {{/each}}
@@ -183,142 +184,143 @@ var LOOKUP_HTML = Handlebars.compile(`
 
 var VEHICLE = {};
 
-function addStylesheet(){
-    var dataStyle = 'index';
-    var styl = document.getElementById('aries-widget').getAttribute('data-lookupstyle');
-    if (styl !== null && styl !== '') {
-        dataStyle = styl;
-    }
+function addStylesheet() {
+	var dataStyle = 'index';
+	var styl = document.getElementById('aries-widget').getAttribute('data-lookupstyle');
+	if (styl !== null && styl !== '') {
+		dataStyle = styl;
+	}
 
-    if (!document.createStylesheet){
-        var nss = document.createElement('link');
-        nss.rel = 'stylesheet';
-        nss.href = dataStyle;
-        var head = document.getElementsByTagName('head');
-        if (head !== undefined && head.length > 0) {
-            head[0].appendChild(nss);
-        }
-        return;
-    }
+	if (!document.createStylesheet) {
+		var nss = document.createElement('link');
+		nss.rel = 'stylesheet';
+		nss.href = dataStyle;
+		var head = document.getElementsByTagName('head');
+		if (head !== undefined && head.length > 0) {
+			head[0].appendChild(nss);
+		}
+		return;
+	}
 
-    document.createStylesheet(dataStyle);
+	document.createStylesheet(dataStyle);
 
-    return;
+	return;
 }
 
 function addJQuery() {
-    if(typeof(jQuery) == 'undefined' || parseFloat(jQuery.fn.jquery) < REQUIRED_JQUERY){ // jQuery has not been loaded
-        if(!JQUERY_INJECTED){
-            document.write('<scr'+'ipt type=\'text/javascript\' src=\'https://ajax.googleapis.com/ajax/libs/jquery/' + REQUIRED_JQUERY + '/jquery.min.js\'></scr' + 'ipt>');
-            JQUERY_INJECTED = true;
-        }
-        setTimeout('addJQuery()', 50);
-    }
+	if (typeof(jQuery) == 'undefined' || parseFloat(jQuery.fn.jquery) < REQUIRED_JQUERY) { // jQuery has not been loaded
+		if (!JQUERY_INJECTED) {
+			document.write('<scr' + 'ipt type=\'text/javascript\' src=\'https://ajax.googleapis.com/ajax/libs/jquery/' + REQUIRED_JQUERY + '/jquery.min.js\'></scr' + 'ipt>');
+			JQUERY_INJECTED = true;
+		}
+		setTimeout('addJQuery()', 50);
+	}
 }
 
 // This function will return all of the GET data inside the 'vars' array
-function getUrlVars(){
-    if (window.location.href.indexOf('?') === -1){
-        return [];
-    }
+function getUrlVars() {
+	if (window.location.href.indexOf('?') === -1) {
+		return [];
+	}
 
-    var vars = [], hash;
-    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    jQuery.each(hashes,function(i, hash){
-            hash = hashes[i].split('=');
-            vars.push(hash[0]);
-            vars[hash[0]] = hash[1];
-    });
-    return vars;
+	var vars = [],
+		hash;
+	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+	jQuery.each(hashes, function(i, hash) {
+		hash = hashes[i].split('=');
+		vars.push(hash[0]);
+		vars[hash[0]] = hash[1];
+	});
+	return vars;
 }
 
 // This function will return the GET variable declared in the 'name' variable
 // @param : GET variable name to be retrieved
-function getUrlVar(name){
-    var hashes = jQuery.getUrlVars();
-    if(hashes !== undefined && hashes[name] !== undefined){
-        return hashes[name];
-    }else{
-        return '';
-    }
+function getUrlVar(name) {
+	var hashes = jQuery.getUrlVars();
+	if (hashes !== undefined && hashes[name] !== undefined) {
+		return hashes[name];
+	} else {
+		return '';
+	}
 }
 
 function initialize() {
-    addStylesheet();
-    addJQuery();
+	addStylesheet();
+	addJQuery();
 
-    if(WIDGET_LOADED) {
-        return;
-    }
+	if (WIDGET_LOADED) {
+		return;
+	}
 
-    jQuery.extend({
-			getUrlVars: getUrlVars,
-			getUrlVar: getUrlVar
+	jQuery.extend({
+		getUrlVars: getUrlVars,
+		getUrlVar: getUrlVar
 	});
-    jQuery.fn.sort = function() {
-        return this.pushStack( [].sort.apply(this, arguments), []);
-    };
-    Handlebars.registerHelper('toUpperCase', function(val){
-        if(val){
-            return val.toUpperCase();
-        }else{
-            return '';
-        }
-    });
-    Handlebars.registerHelper('getImage', function(images){
-        if(images === undefined) {
-            return '';
-        }
+	jQuery.fn.sort = function() {
+		return this.pushStack([].sort.apply(this, arguments), []);
+	};
+	Handlebars.registerHelper('toUpperCase', function(val) {
+		if (val) {
+			return val.toUpperCase();
+		} else {
+			return '';
+		}
+	});
+	Handlebars.registerHelper('getImage', function(images) {
+		if (images === undefined) {
+			return '';
+		}
 
-        for (var i = 0; i < images.length; i++) {
-            var img = images[i];
-						var src = img.path.Scheme + '://' + img.path.Host + img.path.Path;
-            if(img.sort === 'a' && img.height > 75){
-							IMG_SEL = img.path.Path;
-              return src;
-            }
-        }
-    });
+		for (var i = 0; i < images.length; i++) {
+			var img = images[i];
+			var src = img.path.Scheme + '://' + img.path.Host + img.path.Path;
+			if (img.sort === 'a' && img.width > 100) {
+				IMG_SEL = img.path.Path;
+				return src;
+			}
+		}
+	});
 
-		Handlebars.registerHelper('getThumbs', function(images){
-			return getThumbnails(images);
-		});
+	Handlebars.registerHelper('getThumbs', function(images) {
+		return getThumbnails(images);
+	});
 
-	Handlebars.registerHelper('vehicleString', function(v){
+	Handlebars.registerHelper('vehicleString', function(v) {
 		return v.year + ' ' + v.make + ' ' + v.model + ' ' + v.style;
 	});
-    Handlebars.registerHelper('getPrice', function(part){
-        if(part === undefined) {
-            return '';
-        }
+	Handlebars.registerHelper('getPrice', function(part) {
+		if (part === undefined) {
+			return '';
+		}
 
-        if (part.customer.price > 0) {
-            return '$' + part.customer.price;
-        }
+		if (part.customer.price > 0) {
+			return '$' + part.customer.price;
+		}
 
-        for (var i = 0; i < part.pricing.length; i++) {
-            var pr = part.pricing[i];
-            if (pr.type === 'List'){
-                return '$' + parseFloat(pr.price, 2).toFixed(2);
-            }
-        }
-    });
-    Handlebars.registerHelper('if_eq', function(a, b, block) {
-        if(a === b) {
-            return block.fn(this)
-        }
-        return block.inverse(this);
-    });
-	Handlebars.registerHelper('generateCartLink', function(a, b){
+		for (var i = 0; i < part.pricing.length; i++) {
+			var pr = part.pricing[i];
+			if (pr.type === 'List') {
+				return '$' + parseFloat(pr.price, 2).toFixed(2);
+			}
+		}
+	});
+	Handlebars.registerHelper('if_eq', function(a, b, block) {
+		if (a === b) {
+			return block.fn(this)
+		}
+		return block.inverse(this);
+	});
+	Handlebars.registerHelper('generateCartLink', function(a, b) {
 		return a.replace('[part_id]', b);
 	});
 	Handlebars.registerHelper('registerPartial', function(name, options) {
 		Handlebars.dynamicPartials = Handlebars.dynamicPartials || {};
-		Handlebars.dynamicPartials[name] = function (context, _options) {
+		Handlebars.dynamicPartials[name] = function(context, _options) {
 			return options.fn(context, _options);
 		};
 	});
-	Handlebars.registerHelper('partial', function (name, context, options) {
+	Handlebars.registerHelper('partial', function(name, context, options) {
 		context = context || {};
 		var partial = Handlebars.dynamicPartials[name];
 		partial = partial || Handlebars.partials[name];
@@ -333,134 +335,146 @@ function initialize() {
 	CUSTOMER_EMAIL = widget.getAttribute('data-email');
 	CART_LINK = widget.getAttribute('data-cart-link') || '';
 	var tmpKey = widget.getAttribute('data-key');
-	if (tmpKey !== undefined && tmpKey !== null && tmpKey !== ''){
+	if (tmpKey !== undefined && tmpKey !== null && tmpKey !== '') {
 		API_KEY = tmpKey;
 	}
 
-    var tempVehicle = parseQueryString();
-    if (vehicleIsValid(tempVehicle)) {
-        VEHICLE = tempVehicle;
-        getVehicle(function(){
-            jQuery('.aries-widget-dropdown').on('change', changeHandler);
-        });
-    } else {
-        getCollections(function(data){
-            var obj = {collections: data, vehicle: VEHICLE};
-            var colHTML = LOOKUP_HTML(obj);
-            jQuery('.aries-widget-dropdown').remove();
-            jQuery('#aries-widget').html(colHTML);
-            jQuery('.aries-widget-dropdown').on('change', changeHandler);
-        });
-    }
+	var tempVehicle = parseQueryString();
+	if (vehicleIsValid(tempVehicle)) {
+		VEHICLE = tempVehicle;
+		getVehicle(function() {
+			jQuery('.aries-widget-dropdown').on('change', changeHandler);
+			jQuery('.img-thumbnail').on('click', imageClicker);
+		});
+	} else {
+		getCollections(function(data) {
+			var obj = {
+				collections: data,
+				vehicle: VEHICLE
+			};
+			var colHTML = LOOKUP_HTML(obj);
+			jQuery('.aries-widget-dropdown').remove();
+			jQuery('#aries-widget').html(colHTML);
+			jQuery('.aries-widget-dropdown').on('change', changeHandler);
+		});
+	}
 
-    WIDGET_LOADED = true;
+	WIDGET_LOADED = true;
 }
 
 function parseQueryString() {
-    var tmp = {};
-    var hashes = jQuery.getUrlVars();
+	var tmp = {};
+	var hashes = jQuery.getUrlVars();
 
-    if (hashes['category'] === undefined){
-        return {};
-    }
-    tmp.collection = decodeURIComponent(hashes['category']);
+	if (hashes['category'] === undefined) {
+		return {};
+	}
+	tmp.collection = decodeURIComponent(hashes['category']);
 
-    if (hashes['year'] === undefined){
-        return {};
-    }
-    tmp.year = decodeURIComponent(hashes['year']);
+	if (hashes['year'] === undefined) {
+		return {};
+	}
+	tmp.year = decodeURIComponent(hashes['year']);
 
-    if (hashes['make'] === undefined){
-        return {};
-    }
-    tmp.make = decodeURIComponent(hashes['make']);
+	if (hashes['make'] === undefined) {
+		return {};
+	}
+	tmp.make = decodeURIComponent(hashes['make']);
 
-    if (hashes['model'] === undefined){
-        return {};
-    }
-    tmp.model = decodeURIComponent(hashes['model']);
+	if (hashes['model'] === undefined) {
+		return {};
+	}
+	tmp.model = decodeURIComponent(hashes['model']);
 
-    if (hashes['style'] === undefined){
-        return {};
-    }
-    tmp.style = decodeURIComponent(hashes['style']);
+	if (hashes['style'] === undefined) {
+		return {};
+	}
+	tmp.style = decodeURIComponent(hashes['style']);
 
-    return tmp;
+	return tmp;
 }
 
 function vehicleIsValid(v) {
-    if (v.collection === undefined || v.collection === ''){
-        return false;
-    }
-    if (v.year === undefined || v.year === ''){
-        return false;
-    }
-    if (v.make === undefined || v.make === ''){
-        return false;
-    }
-    if (v.model === undefined || v.model === ''){
-        return false;
-    }
-    if (v.style === undefined || v.style === ''){
-        return false;
-    }
+	if (v.collection === undefined || v.collection === '') {
+		return false;
+	}
+	if (v.year === undefined || v.year === '') {
+		return false;
+	}
+	if (v.make === undefined || v.make === '') {
+		return false;
+	}
+	if (v.model === undefined || v.model === '') {
+		return false;
+	}
+	if (v.style === undefined || v.style === '') {
+		return false;
+	}
 
-    return true;
+	return true;
 }
 
-function changeHandler(){
-    var val = $(this).val();
-    if (val.length === 0){
-        return;
-    }
+function changeHandler() {
+	var val = $(this).val();
+	if (val.length === 0) {
+		return;
+	}
 
-    if ($(this).hasClass('collection')){
-        VEHICLE.collection = val.toLowerCase();
-    } else if ($(this).hasClass('year')){
-        VEHICLE.year = val.toLowerCase();
-    } else if ($(this).hasClass('make')){
-        VEHICLE.make = val.toLowerCase();
-    } else if ($(this).hasClass('model')){
-        VEHICLE.model = val.toLowerCase();
-    } else if ($(this).hasClass('style')){
-        VEHICLE.style = val.toLowerCase();
-    }
-    getVehicle(function(){
-        jQuery('.aries-widget-dropdown').on('change', changeHandler);
-    });
+	if ($(this).hasClass('collection')) {
+		VEHICLE.collection = val.toLowerCase();
+	} else if ($(this).hasClass('year')) {
+		VEHICLE.year = val.toLowerCase();
+	} else if ($(this).hasClass('make')) {
+		VEHICLE.make = val.toLowerCase();
+	} else if ($(this).hasClass('model')) {
+		VEHICLE.model = val.toLowerCase();
+	} else if ($(this).hasClass('style')) {
+		VEHICLE.style = val.toLowerCase();
+	}
+	getVehicle(function() {
+		jQuery('.aries-widget-dropdown').on('change', changeHandler);
+	});
+}
+
+function imageClicker() {
+	var full = $(this).data('full');
+	var main = $(this).closest('.images').find('.main').attr('src');
+
+	$(this).closest('.images').find('.main').attr('src', full);
+	$(this).attr('src', main).data('full', main);
 }
 
 function getCollections(callback) {
-    var req = jQuery.ajax({
-        type: 'GET',
-        url: API_HOST + '/vehicle/mongo/cols',
-        dataType: 'json',
-        data: {
-            key: API_KEY
-        }
-    });
+	var req = jQuery.ajax({
+		type: 'GET',
+		url: API_HOST + '/vehicle/mongo/cols',
+		dataType: 'json',
+		data: {
+			key: API_KEY
+		}
+	});
 
-    req.done(function(data) {
-        callback(data);
-    });
+	req.done(function(data) {
+		callback(data);
+	});
 }
 
 function getVehicle(callback) {
-    var req = jQuery.ajax({
-        type: 'POST',
-        url: API_HOST + '/vehicle/mongo?key=' + API_KEY,
-        dataType: 'json',
-        data: jQuery.param(VEHICLE)
-    });
+	var req = jQuery.ajax({
+		type: 'POST',
+		url: API_HOST + '/vehicle/mongo?key=' + API_KEY,
+		dataType: 'json',
+		data: jQuery.param(VEHICLE)
+	});
 
-    req.done(function(data) {
-        getCollections(function(cols){
-            data.vehicle = VEHICLE;
-			if (SHOPPING_CART === 'nuera'){
+	req.done(function(data) {
+		getCollections(function(cols) {
+			data.vehicle = VEHICLE;
+			if (SHOPPING_CART === 'nuera') {
 				var returnURL = window.location.pathname;
 				if (returnURL.indexOf('?') !== -1) {
 					returnURL += '&partID=[part_id]';
-				}else{
+				} else {
 					returnURL += '?partID=[part_id]';
 				}
 
@@ -481,24 +495,24 @@ function getVehicle(callback) {
 				link: CART_LINK,
 				vehicle: VEHICLE
 			};
-            if (data.parts && data.parts.length > 0) {
-                data.collections = cols;
-                VEHICLE = {};
-            }
+			if (data.parts && data.parts.length > 0) {
+				data.collections = cols;
+				VEHICLE = {};
+			}
 
-            var yearHTML = LOOKUP_HTML(data);
-            jQuery('#aries-widget .form-group').remove();
-            jQuery('#aries-widget').html(yearHTML);
+			var yearHTML = LOOKUP_HTML(data);
+			jQuery('#aries-widget .form-group').remove();
+			jQuery('#aries-widget').html(yearHTML);
 
-            callback();
-        });
+			callback();
+		});
 
-    });
+	});
 }
 
 function getThumbnails(images) {
-	if(images === undefined) {
-			return '';
+	if (images === undefined) {
+		return '';
 	}
 
 	var result = "";
@@ -507,9 +521,22 @@ function getThumbnails(images) {
 
 	for (var i = 0; i < images.length; i++) {
 		var img = images[i];
-		if(img.size === "Tall" && img.path.Path !== IMG_SEL){
+		if (img.size === 'Tall' && img.path.Path !== IMG_SEL) {
 			src = img.path.Scheme + '://' + img.path.Host + img.path.Path;
-			str = "<img src='" + src + "' alt='" + this.short_description + "' class='mini img-thumbnail'>";
+
+			var fullsrc = '';
+			for (var k = 0; k < images.length; k++) {
+				var img2 = images[k];
+				if (img2.sort === img.sort && img2.width === 300){
+					fullsrc = img2.path.Scheme + '://' + img2.path.Host + img2.path.Path;
+					break;
+				}
+			}
+			if (fullsrc === '') {
+				fullsrc = src;
+			}
+
+			str = '<img src="' + src + '" alt="' + this.short_description + '" data-full="' + fullsrc + '" class="mini img-thumbnail">';
 			result = result.concat(str);
 		}
 	}
