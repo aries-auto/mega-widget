@@ -4,6 +4,7 @@ var WIDGET_LOADED = false;
 var SHOPPING_CART = 'none';
 var CUSTOMER_EMAIL = '';
 var CART_LINK = '';
+var IMG_SEL = '';
 var API_HOST = 'http://ariesautoapi.curtmfg.com';
 var API_KEY = '883d4046-8b96-11e4-9475-42010af00d4e';
 var LOOKUP_HTML = Handlebars.compile(`
@@ -148,9 +149,12 @@ var LOOKUP_HTML = Handlebars.compile(`
 						{{#partial ../cart.type this}}{{/partial}}
                     </div>
                 </div>
-                <div class="row">
+                <div>
                     <div class="col-md-4 images">
-                        <img src="{{getImage this.images}}" alt="{{this.short_description}}" class="main img-thumbnail">
+                        <img src="{{getImage this.images}}" id="img-main-{{this.oldPartNumber}}" alt="{{this.short_description}}" class="main img-thumbnail">
+												<div id="img_thumbs">
+													{{{getThumbs this.images}}}
+												</div>
                     </div>
                     <div class="col-md-8">
                         <table class="table table-striped table-bordered table-condensed">
@@ -268,11 +272,38 @@ function initialize() {
 
         for (var i = 0; i < images.length; i++) {
             var img = images[i];
+						var src = img.path.Scheme + '://' + img.path.Host + img.path.Path;
             if(img.sort === 'a' && img.height > 75){
-                return img.path.Scheme + '://' + img.path.Host + img.path.Path;
+							IMG_SEL = img.path.Path;
+              return src;
             }
         }
     });
+
+		Handlebars.registerHelper('getThumbs', function(images){
+				if(images === undefined) {
+						return '';
+				}
+
+				var result = "";
+				var src = "";
+				var str = "";
+
+				console.log(IMG_SEL);
+
+				for (var i = 0; i < images.length; i++) {
+					var img = images[i];
+					if(img.size === "Tall" && img.path.Path !== IMG_SEL){
+						src = img.path.Scheme + '://' + img.path.Host + img.path.Path;
+						str = "<img src='" + src + "' alt='" + this.short_description + "' class='mini img-thumbnail'>";
+						result = result.concat(str);
+					}
+        }
+
+				return result;
+
+		});
+
 	Handlebars.registerHelper('vehicleString', function(v){
 		return v.year + ' ' + v.make + ' ' + v.model + ' ' + v.style;
 	});
@@ -483,6 +514,14 @@ function getVehicle(callback) {
         });
 
     });
+}
+
+function setImages(images, imgPath) {
+
+}
+
+function getThumbnails(images, imgPath) {
+
 }
 
 initialize();
