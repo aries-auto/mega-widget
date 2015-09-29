@@ -433,6 +433,7 @@ function changeHandler() {
 	}
 	getVehicle(function() {
 		jQuery('.aries-widget-dropdown').on('change', changeHandler);
+		jQuery('.img-thumbnail').on('click', imageClicker);
 	});
 }
 
