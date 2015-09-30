@@ -488,7 +488,6 @@ function imageClicker() {
 	var main = jQuery(this).closest('.images').find('.main').attr('src');
 
 	jQuery(this).closest('.images').find('.main').attr('src', full);
-	//jQuery(this).attr('src', main).data('full', main);
 }
 
 function getCollections(callback) {
