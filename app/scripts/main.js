@@ -4,7 +4,6 @@ var WIDGET_LOADED = false;
 var SHOPPING_CART = 'none';
 var CUSTOMER_EMAIL = '';
 var CART_LINK = '';
-var IMG_SEL = '';
 var API_HOST = 'http://goapi.curtmfg.com';
 var API_KEY = '883d4046-8b96-11e4-9475-42010af00d4e';
 // var LOOKUP_HTML = Handlebars.compile(`
@@ -302,7 +301,6 @@ function initialize() {
 			img = images[i];
 			src = img.path.Scheme + '://' + img.path.Host + img.path.Path;
 			if (img.sort === 'a' && img.size === size) {
-				IMG_SEL = img.path.Path;
 				return src;
 			}
 		}
@@ -311,7 +309,6 @@ function initialize() {
 			img = images[i];
 			src = img.path.Scheme + '://' + img.path.Host + img.path.Path;
 			if (img.sort === 'a') {
-				IMG_SEL = img.path.Path;
 				return src;
 			}
 		}
@@ -319,7 +316,6 @@ function initialize() {
 		for (i = 0; i < images.length; i++) {
 			img = images[i];
 			src = img.path.Scheme + '://' + img.path.Host + img.path.Path;
-			IMG_SEL = img.path.Path;
 			return src;
 		}
 	});
@@ -492,7 +488,7 @@ function imageClicker() {
 	var main = jQuery(this).closest('.images').find('.main').attr('src');
 
 	jQuery(this).closest('.images').find('.main').attr('src', full);
-	jQuery(this).attr('src', main).data('full', main);
+	//jQuery(this).attr('src', main).data('full', main);
 }
 
 function getCollections(callback) {
@@ -572,7 +568,7 @@ function getThumbnails(images) {
 	var i;
 	for (i = 0; i < images.length; i++) {
 		var img = images[i];
-		if (img.size === 'Tall' && img.path.Path !== IMG_SEL) {
+		if (img.size === 'Tall') {
 			src = img.path.Scheme + '://' + img.path.Host + img.path.Path;
 
 			var fullsrc = '';
@@ -605,9 +601,5 @@ function getThumbnails(images) {
 
 	return result;
 }
-
-// function getSelected(images, imgPath) {
-// 	var tmp = "img_main"
-// }
 
 initialize();
