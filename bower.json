@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "bootstrap-sass": "~3.3.5",
+    "fancybox": "~2.1.5",
     "handlebars": "~4.0.2",
     "modernizr": "~2.8.1"
   },

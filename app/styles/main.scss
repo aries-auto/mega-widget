@@ -1,7 +1,7 @@
 $icon-font-path: '../fonts/';
 
 // bower:scss
-@import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import 'bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
 // endbower
 
 .browserupgrade {
@@ -23,6 +23,13 @@ body {
 .footer {
   padding-left: 15px;
   padding-right: 15px;
+}
+
+.modal-dialog{
+    width: 70%;
+    img{
+        width: 100%;
+    }
 }
 
 /* Custom page header */

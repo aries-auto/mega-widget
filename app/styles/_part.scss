@@ -2,6 +2,10 @@
     .result-info{
         border-bottom: 1px solid #eaeaea;
         padding: 10px 0;
+
+        > div:nth-child(2) {
+            text-align: right;
+        }
     }
 }
 
@@ -14,11 +18,16 @@
         .checkout {
             min-height: 60px;
             line-height: 60px;
+
             .price {
                 vertical-align: bottom;
                 font-weight: bold;
                 font-size: 16px;
                 color: #c73031;
+            }
+
+            &.price_only{
+                text-align: right;
             }
 
             .paypal{
