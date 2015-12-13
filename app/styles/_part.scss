@@ -1,59 +1,82 @@
-.part-results{
-    .result-info{
-        border-bottom: 1px solid #eaeaea;
-        padding: 10px 0;
-
-        > div:nth-child(2) {
-            text-align: right;
-        }
-    }
+.form-group {
+				.clear-btn {
+								margin: 10px 0;
+				}
 }
 
-.part{
-    border-bottom: 1px solid #eaeaea;
-    padding: 15px 0;
+.part-results {
+				.result-info {
+								border-bottom: 1px solid #eaeaea;
+								padding: 10px 0;
+				}
+}
 
-    .row:nth-child(1) {
-        min-height: 60px;
-        .checkout {
-            min-height: 60px;
-            line-height: 60px;
+.part {
+				border-bottom: 1px solid #eaeaea;
+				padding: 15px 0;
+				.row:nth-child(1) {
+								min-height: 60px;
+								.checkout {
+												min-height: 60px;
+												line-height: 60px;
+												.price {
+																vertical-align: bottom;
+																font-weight: bold;
+																font-size: 16px;
+																color: #c73031;
+												}
+												&.price_only {
+																text-align: right;
+												}
+												.paypal {
+																.row > div {
+																				padding-right: 0;
+																				margin-right: 0;
+																}
+																.price,
+																label {
+																				line-height: 20px;
+																				margin-bottom: 0;
+																}
+																.price {
+																				display: block;
+																}
+												}
+												.bigcommerce {
+                                .accPrice{
+                                  max-height: 20px;
+                                }
 
-            .price {
-                vertical-align: bottom;
-                font-weight: bold;
-                font-size: 16px;
-                color: #c73031;
-            }
+																.form-group .form-control {
+                                        display: inline-block;
+																				width: 37px;
+																				padding: 3px;
+																				text-align: center;
+																}
 
-            &.price_only{
-                text-align: right;
-            }
+                                input[type=image] {
+                                        vertical-align: middle;
+                                }
+												}
+								}
+				}
+				.images {
+								.main {
+												max-width: 100%;
+								}
+								.mini {
+												max-width: 25%;
+												margin: 5px 4px;
+								}
+				}
+}
 
-            .paypal{
-                .row > div {
-                    padding-right: 0;
-                    margin-right: 0;
-                }
-                .price, label {
-                    line-height: 20px;
-                    margin-bottom: 0;
-                }
-                .price {
-                    display:block;
-                }
-            }
-        }
-    }
-
-    .images{
-        .main{
-            max-width: 100%;
-        }
-
-        .mini{
-            max-width: 25%;
-            margin: 5px 4px;
-        }
-    }
+@media screen and (min-width: 768px) {
+  .part-results {
+  				.result-info {
+  								> div:nth-child(2) {
+  												text-align: right;
+  								}
+  				}
+  }
 }
