@@ -154,7 +154,6 @@ var LOOKUP_HTML = Handlebars.compile(`
 				<div class="clear-btn">
 					<label class="sr-only" for="aries-widget-clear">Clear Vehicle</label>
 					<button class="btn btn-primary">
-						<span class="glyphicon glyphicon-remove"></span>
 						Clear Vehicle
 					</button>
 				</div>
