@@ -564,7 +564,7 @@ function getCollections(callback) {
 function getVehicle(callback) {
 	var req = jQuery.ajax({
 		type: 'POST',
-		url: API_HOST + '/vehicle/mongo?key=' + API_KEY,
+		url: API_HOST + '/vehicle/mongo/allCollections?key=' + API_KEY,
 		dataType: 'json',
 		data: jQuery.param(VEHICLE)
 	});
@@ -572,6 +572,7 @@ function getVehicle(callback) {
 	req.done(function(data) {
 		getCollections(function(cols) {
 			data.vehicle = VEHICLE;
+
 			if (SHOPPING_CART === 'nuera') {
 				var returnURL = window.location.pathname;
 				if (returnURL.indexOf('?') !== -1) {
@@ -601,6 +602,8 @@ function getVehicle(callback) {
 			if (vehicleIsValid(data.vehicle)) {
 				data.collections = cols;
 				VEHICLE = {};
+			} else {
+				data.parts = [];
 			}
 
 			var html = LOOKUP_HTML(data);
