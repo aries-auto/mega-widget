@@ -35,6 +35,32 @@ var LOOKUP_HTML = Handlebars.compile(`
 			</div>
 		</form>
 	{{/registerPartial}}
+	{{#registerPartial "shopify"}}
+		<form class="shopify" action="{{../cart.link}}/cart/add.js" onSubmit="shopifySubmit(event)" method="post" class="form-inline">
+			<input type="hidden" name="product_id" value="{{this.customer.cart_reference}}">
+			<div class="row">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+					<p class="price accPrice">{{getPrice this}}</p>
+					<div class="form-group">
+						<label>Qty</label>
+						<input type="number" class="form-control" name="qty" value="1">
+					</div>
+				</div>
+				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+					<div class="product-form__item product-form__item--submit">
+						<button type="submit" name="add" id="AddToCart" class="btn btn--full product-form__cart-submit">
+							<span id="AddToCartText">Add to Cart</span>
+						</button>
+					</div>
+					{{#if this.install_sheet}}
+						<a href="{{getInstall this.install_sheet}}" target="_blank" title="View Installation Sheet">
+							<img src="http://cdn2.bigcommerce.com/server2000/z10l8n/product_images/uploaded_images/setup.jpg" alt="View Installation Sheet">
+						</a>
+					{{/if}}
+				</div>
+			</div>
+		</form>
+	{{/registerPartial}}
 	{{#registerPartial "custom"}}
 		{{#if_eq ../cart.link ''}}
 		{{else}}
@@ -659,6 +685,24 @@ function getThumbnails(images) {
 	}
 
 	return result;
+}
+
+function shopifySubmit(e) { //eslint-disable-line no-unused-vars
+	e.preventDefault();
+	var forms = jQuery(e.target).get();
+	if (!forms || forms.length === 0) {
+		return;
+	}
+
+	var form = forms[0];
+	var obj = {
+		id: parseInt(jQuery(form).find('input[name=product_id]').val(), 0),
+		quantity: parseInt(jQuery(form).find('input[name=qty]').val(), 0)
+	};
+	jQuery(form).find('.cart-error').remove();
+	jQuery.post(jQuery(form).attr('action'), obj).success(function() {}).error(function() {
+		jQuery(form).find('button').after('<span class="cart-error text-danger">Failed to add to cart</span>');
+	});
 }
 
 initialize();
