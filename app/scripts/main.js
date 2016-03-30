@@ -259,7 +259,6 @@ var LOOKUP_HTML = Handlebars.compile(`
     </div>
     {{/if}}
 `);
-// var LOOKUP_HTML = Handlebars.compile('{{#registerPartial "paypal"}} <form class="paypal" target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post"> <div class="row"> <div class="col-md-5"> <span class="price accPrice">{{getPrice this}}</span> <label>Qty</label> <select name="quantity" style="min-width:40px;display:inline"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> </select> </div> <div class="col-md-7"> <input type="hidden" name="item_number" value="{{this.short_description}} #{{this.part_number}}" /> <input type="hidden" name="cmd" value="_xclick" /> <input type="hidden" name="no_note" value="1" /> <input type="hidden" name="business" value="{{../cart.email}}" /> <input type="hidden" name="currency_code" value="USD" /> <input type="hidden" name="return" value="{{../cart.location}}" /> <input type="hidden" name="item_name" value="{{this.short_description}}" /> <input type="hidden" name="amount" value="{{getPrice this}}" /> <input type="image" name="submit" src="https://www.paypalobjects.com/webstatic/en_US/btn/btn_pponly_142x27.png" border="0" align="top" alt="Check out with PayPal" /> </div> </div> </form> {{/registerPartial}} {{#registerPartial "custom"}} {{#if_eq ../cart.link \'\'}} {{else}} <span class="price">{{getPrice this}}</span> <a href="{{generateCartLink ../cart.link this.customer.cart_reference}}" title="Buy Now"> <img src="https://labs.curtmfg.com/widget_v2/img/checkout.png" alt="Checkout" /> </a> {{/if_eq}} {{/registerPartial}} {{#registerPartial "price_only"}} <span class="price">{{getPrice this}}</span> {{/registerPartial}} {{#registerPartial "nuera"}} <span class="price"><span>Price:</span>{{getPrice this}}</span> <form class="nuera" method="post" action="{{generateCartLink ../cart.link this.part_number}}"> <input name="VariantStyle" id="VariantStyle" type="hidden" value="0" /> <input name="IsWishList" id="IsWishList" type="hidden" value="0" /> <input name="IsGiftRegistry" id="IsGiftRegistry" type="hidden" value="0" /> <input name="UpsellProducts" id="UpsellProducts" type="hidden" value="" /> <input name="CartRecID" id="CartRecID" type="hidden" value="0" /> <input name="ProductID" id="ProductID" type="hidden" value="{{this.customer.cart_reference}}" /> <input name="VariantID" id="VariantID" type="hidden" value="0" /> <small>Quantity:</small> <input name="Quantity" id="Quantity" type="text" value="1" size="3" maxlength="4" /> <input type="submit" value="Add to Cart" /> </form> {{/registerPartial}} {{#registerPartial "fasttrackracks"}} <form action="http://www.fasttrackracks.com/store/addtocart.aspx" method="post"> <div style="padding-top:15px"><span class="price accPrice">{{getPrice this}}</span> <label>Qty</label> <select name="qty" style="min-width:40px;display:inline"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> </select> </div> <input type="hidden" name="return" value="{{../cart.location}}" /> <input type="hidden" name="imageurl" value="{{getImage this.images}}" /> <input type="hidden" name="ItemNbr" value="{{this.short_description}} #{{this.part_number}}" /> <input type="hidden" name="product" value="{{vehicleString ../cart.vehicle}} {{this.short_description}} #{{this.part_number}}" /> <input type="hidden" name="notax" value="null" /> <input type="hidden" name="price" value="{{getPrice this}}" /> <input type="hidden" name="weight" value="null" /> <input type="submit" name="submit" class="fasttrackracks_button" value="Buy Now" /> </form> {{/registerPartial}} {{#registerPartial "stowaway2"}} <form action="http://www.stowaway2.com/store/addtocart.aspx" method="post"> <div style="padding-top:15px"><span class="price accPrice">{{getPrice this}}</span> <label>Qty</label> <select name="qty" style="min-width:40px;display:inline"> <option>1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> </select> </div> <input type="hidden" name="return" value="{{../cart.location}}" /> <input type="hidden" name="imageurl" value="{{getImage this.images}}" /> <input type="hidden" name="ItemNbr" value="{{this.short_description}} #{{this.part_number}}" /> <input type="hidden" name="product" value="{{vehicleString ../cart.vehicle}} {{this.short_description}} #{{this.part_number}}" /> <input type="hidden" name="notax" value="null" /> <input type="hidden" name="price" value="{{getPrice this}}" /> <input type="hidden" name="weight" value="null" /> <input type="submit" name="submit" class="fasttrackracks_button" value="Buy Now" /> </form> {{/registerPartial}} <div class="form-group"> {{#if collections}} <label class="sr-only" for="aries-widget-collection">Select Category</label><select class="aries-widget-dropdown collection form-control"><option value="">- Select Category - </option>{{#each collections}}<option>{{toUpperCase .}}</option>{{/each}}</select> {{/if}} {{#if available_years}} <label class="sr-only" for="aries-widget-years">Select Vehicle Year</label><select class="aries-widget-dropdown form-control year"><option value="">- Select Vehicle Year - </option>{{#each available_years}}<option>{{.}}</option>{{/each}}</select> {{/if}} {{#if available_makes}} <label class="sr-only" for="aries-widget-makes">Select Vehicle Make</label><select class="aries-widget-dropdown form-control make"><option value="">- Select Vehicle Make - </option>{{#each available_makes}}<option>{{toUpperCase .}}</option>{{/each}}</select> {{/if}} {{#if available_models}} <label class="sr-only" for="aries-widget-models">Select Vehicle Model</label><select class="aries-widget-dropdown form-control model"><option value="">- Select Vehicle Model - </option>{{#each available_models}}<option>{{toUpperCase .}}</option>{{/each}}</select> {{/if}} {{#if available_styles}} <label class="sr-only" for="aries-widget-styles">Select Vehicle Style</label><select class="aries-widget-dropdown form-control style"><option value="">- Select Vehicle Style - </option>{{#each available_styles}}<option>{{toUpperCase .}}</option>{{/each}}</select> {{/if}} </div> {{#if parts}} <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> <h4 class="modal-title" id="myModalLabel">Image preview</h4> </div> <div class="modal-body"> <img src="" id="imagepreview" > </div> <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> </div> </div> </div> </div> <div class="part-results"> <div class="result-info"> <div class="col-md-4 total-results"> <span>Total Results: </span> <span>{{./parts.length}}</span> </div> <div class="col-md-8"> <span> {{toUpperCase ././vehicle.collection}} {{././vehicle.year}} {{toUpperCase ././vehicle.make}} {{toUpperCase ././vehicle.model}} {{toUpperCase ././vehicle.style}} </span> </div> <div class="clearfix"></div> </div> {{#each ./parts}} <div class="part"> <div class="row"> <div class="col-md-7"> <h3>{{this.short_description}} #{{this.part_number}}</h3> </div> <div class="col-md-5 checkout {{../cart.type}}"> {{#partial ../cart.type this}}{{/partial}} </div> </div> <div> <div class="col-md-4 images"> <a class="main-handler" href="{{getImage this.images \'full\'}}"> <img src="{{getImage this.images \'Venti\'}}" alt="{{this.short_description}}" class="main img-thumbnail"> </a> <div class="img-thumbs"> {{{getThumbs this.images}}} </div> </div> <div class="col-md-8"> <table class="table table-striped table-bordered table-condensed"> <tbody> {{#each this.attributes}} <tr> <td>{{key}}</td> <td>{{value}}</td> </tr> {{/each}} </tbody> </table> <ul> {{#each this.content}} {{#if_eq this.contentType.Type \'Bullet\'}} <li>{{this.text}}</li> {{/if_eq}} {{/each}} </div> <div class="clearfix"></div> </div> </div> {{/each}} </div> {{/if}}');
 var VEHICLE = {};
 
 function addStylesheet() {
@@ -267,6 +266,12 @@ function addStylesheet() {
 	var styl = document.getElementById('aries-widget').getAttribute('data-lookupstyle');
 	if (styl !== null && styl !== '') {
 		dataStyle = styl;
+	}
+
+	if (window.location.hostname.indexOf('localhost') === -1) {
+		if (dataStyle.indexOf('://') === -1) {
+			dataStyle = '//product-widget.appspot.com/' + dataStyle;
+		}
 	}
 
 	if (!document.createStylesheet) {
@@ -560,6 +565,7 @@ function imageClicker() {
 }
 
 function clearVehicle() {
+	VEHICLE = {};
 	getCollections(function(data) {
 		var obj = {
 			collections: data,
@@ -699,9 +705,23 @@ function shopifySubmit(e) { //eslint-disable-line no-unused-vars
 		id: parseInt(jQuery(form).find('input[name=product_id]').val(), 0),
 		quantity: parseInt(jQuery(form).find('input[name=qty]').val(), 0)
 	};
+
+	// TODO: Remove this for production use
+	obj.id = 18290506375;
 	jQuery(form).find('.cart-error').remove();
-	jQuery.post(jQuery(form).attr('action'), obj).success(function() {}).error(function() {
-		jQuery(form).find('button').after('<span class="cart-error text-danger">Failed to add to cart</span>');
+	jQuery(form).find('.cart-message').remove();
+	jQuery.ajax({
+		type: 'post',
+		url: jQuery(form).attr('action'),
+		dataType: 'json',
+		data: obj,
+		success: function() {
+			jQuery('.site-header__cart .site-header__cart-indicator').removeClass('hide');
+			jQuery(form).find('button').after('<span class="cart-message text-success">Item added to cart</span>');
+		},
+		error: function() {
+			jQuery(form).find('button').after('<span class="cart-error text-danger">Failed to add to cart</span>');
+		}
 	});
 }
 
